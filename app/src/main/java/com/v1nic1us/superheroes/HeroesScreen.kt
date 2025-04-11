@@ -23,6 +23,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,7 +44,7 @@ class HeroesScreen : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SuperheroesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize().padding(WindowInsets.systemBars.asPaddingValues())) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize().padding(WindowInsets.systemBars.asPaddingValues()), topBar = { TopAppBar() }) { innerPadding ->
                     SuperHeroesApp(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -55,8 +57,8 @@ class HeroesScreen : ComponentActivity() {
 @Composable
 fun SuperHeroesApp(modifier: Modifier) {
     LazyColumn(modifier= modifier.fillMaxHeight().background(MaterialTheme.colorScheme.background)) {
-        items(items=HeroesRepository.heroes) { hero ->
-            CardSuperHeroes(modifier = modifier.padding(8.dp), hero = hero)
+        items(items = HeroesRepository.heroes) { hero ->
+            CardSuperHeroes(modifier = Modifier.padding(8.dp), hero = hero)
         }
     }
 }
@@ -113,6 +115,20 @@ fun IconHeroes(
     Image(
         painter = painterResource(id = imageResId),
         contentDescription = "Superheroes Icon"
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopAppBar(modifier: Modifier = Modifier) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = stringResource(R.string.app_name),
+                style = MaterialTheme.typography.displayLarge,
+            )
+        },
+        modifier = modifier
     )
 }
 
