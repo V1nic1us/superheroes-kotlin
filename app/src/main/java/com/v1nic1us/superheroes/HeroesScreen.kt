@@ -30,6 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,37 +45,36 @@ class HeroesScreen : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SuperheroesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize().padding(WindowInsets.systemBars.asPaddingValues()), topBar = { TopAppBar() }) { innerPadding ->
-                    SuperHeroesApp(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                    SuperHeroesApp()
             }
         }
     }
 }
 
 @Composable
-fun SuperHeroesApp(modifier: Modifier) {
-    LazyColumn(modifier= modifier.fillMaxHeight().background(MaterialTheme.colorScheme.background)) {
-        items(items = HeroesRepository.heroes) { hero ->
-            CardSuperHeroes(modifier = Modifier.padding(8.dp), hero = hero)
+fun SuperHeroesApp() {
+    Scaffold(modifier = Modifier.fillMaxSize(), topBar = { TopAppBar() }) { innerPadding ->
+        LazyColumn(modifier = Modifier.fillMaxHeight().background(MaterialTheme.colorScheme.background).padding(innerPadding)) {
+            items(items = HeroesRepository.heroes) { hero ->
+                CardSuperHeroes(modifier = Modifier.padding(8.dp), hero = hero)
+            }
         }
     }
 }
 
 @Composable
 fun CardSuperHeroes(
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     hero: Hero
 ) {
-    Card(modifier = modifier
+    Card(modifier = Modifier
         .fillMaxWidth()
-        .height(104.dp),
+        .height(100.dp)
+        .padding(8.dp),
         colors =  CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer) ,
     ) {
-        Box(modifier= modifier.height(84.dp)){
-            Row(modifier= modifier) {
+        Box(modifier= Modifier.height(84.dp).padding(8.dp)){
+            Row(modifier= Modifier) {
                 DescriptionHeroes(
                     nameRes = stringResource(hero.nameRes),
                     descriptionRes = stringResource(hero.descriptionRes)
@@ -136,6 +136,6 @@ fun TopAppBar(modifier: Modifier = Modifier) {
 @Composable
 fun SuperHeroesAppPreview() {
     SuperheroesTheme {
-        SuperHeroesApp(Modifier)
+            SuperHeroesApp()
     }
 }
